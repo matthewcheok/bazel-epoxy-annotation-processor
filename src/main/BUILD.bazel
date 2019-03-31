@@ -1,0 +1,53 @@
+load("@io_bazel_rules_kotlin//kotlin:kotlin.bzl", "kt_android_library")
+
+java_plugin(
+    name = "epoxy_plugin",
+    processor_class = "com.airbnb.epoxy.EpoxyProcessor",
+    deps = [
+        "@maven//:com_airbnb_android_epoxy",
+        "@maven//:com_airbnb_android_epoxy_annotations",
+    ],
+)
+
+java_library(
+    name = "epoxy_lib",
+    exported_plugins = ["epoxy_plugin"],
+)
+
+android_library(
+    name = "resources",
+    manifest = "AndroidManifest.xml",
+    custom_package = "com.matthewcheok.bazeltest",
+    resource_files = glob(
+        ["res/**"], 
+        exclude=["res/.DS_Store"]
+    ),
+    deps = [
+        "@maven//:androidx_appcompat_appcompat",
+        "@maven//:androidx_constraintlayout_constraintlayout",
+    ],
+)
+
+
+kt_android_library(
+    name = "lib",
+    srcs = glob(["java/**/*.kt"]),
+    custom_package = "com.matthewcheok.bazeltest",
+    deps = [
+        ":resources",
+        ":epoxy_lib",
+        "@maven//:androidx_constraintlayout_constraintlayout",
+        "@maven//:androidx_annotation_annotation",
+        "@maven//:androidx_appcompat_appcompat",
+        "@maven//:androidx_core_core",
+        "@maven//:androidx_core_core_ktx",
+        "@maven//:androidx_drawerlayout_drawerlayout",
+        "@maven//:androidx_lifecycle_lifecycle_common",
+        "@maven//:androidx_lifecycle_lifecycle_viewmodel",
+        "@maven//:androidx_fragment_fragment",
+        "@maven//:androidx_recyclerview_recyclerview", 
+        "@maven//:com_airbnb_android_epoxy",
+        "@maven//:com_airbnb_android_epoxy_annotations",
+    ],
+    visibility = ["//visibility:public"],
+)

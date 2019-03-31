@@ -1,0 +1,10 @@
+android_binary(
+    name = "bazel_test",
+    manifest = "AndroidManifest.xml",
+    custom_package = "com.matthewcheok.bazeltest",
+    multidex = "native",
+    dex_shards = 10,
+    deps = [
+        "//src/main:lib",
+    ],
+)
